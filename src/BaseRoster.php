@@ -12,6 +12,13 @@ use InvalidArgumentException;
 abstract class BaseRoster
 {
 	/**
+	 * How long to cache this handler's store.
+	 *
+	 * @var int
+	 */
+	protected $ttl = DAY;
+
+	/**
 	 * Stored hash of IDs and their name.
 	 *
 	 * @var array<int|string, string>|null
@@ -30,7 +37,7 @@ abstract class BaseRoster
      *
      * @param int|string $id
      */
-    public function get($id): string
+    final public function get($id): string
     {
 		if (! (is_int($id) || is_string($id)) || $id === '') // @phpstan-ignore-line
 		{
@@ -67,7 +74,7 @@ abstract class BaseRoster
     		return;
     	}
 
-		cache()->save($this->key(), $this->store, DAY);
+		cache()->save($this->key(), $this->store, $this->ttl);
     }
 
     /**

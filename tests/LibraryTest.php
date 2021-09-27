@@ -1,11 +1,13 @@
 <?php
 
-use Tatter\Roster\BaseRoster;
 use Tatter\Roster\Roster;
 use Tests\Support\Rosters\FruitRoster;
 use Tests\Support\RosterTestCase;
 
-class LibraryTest extends RosterTestCase
+/**
+ * @internal
+ */
+final class LibraryTest extends RosterTestCase
 {
 	public function testService()
 	{
@@ -16,7 +18,7 @@ class LibraryTest extends RosterTestCase
 
 	public function testSetHandler()
 	{
-		$handler = new FruitRoster;
+		$handler = new FruitRoster();
 		$roster  = service('roster');
 
 		$roster->setHandler('foo', $handler);
@@ -53,5 +55,20 @@ class LibraryTest extends RosterTestCase
 		$this->expectExceptionMessage('Unknown Roster handler "veggie".');
 
 		service('roster')->veggie(1);
+	}
+
+	public function testCallSuccess()
+	{
+		$result = service('roster')->fruit(1);
+
+		$this->assertSame('banana', $result);
+	}
+
+	public function testCommitStoresCache()
+	{
+		service('roster')->fruit(1);
+		service('roster')->commit();
+
+		$this->assertSame((new FruitRoster())->data, cache('roster-fruits'));
 	}
 }

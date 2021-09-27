@@ -6,7 +6,11 @@ use Tatter\Roster\BaseRoster;
 
 class FruitRoster extends BaseRoster
 {
-	private $data = [
+	public $didFetch = false;
+
+	public $didFetchAll = false;
+
+	public $data = [
 		1 => 'banana',
 		2 => 'mango',
 		9 => 'apple',
@@ -28,6 +32,8 @@ class FruitRoster extends BaseRoster
      */
     protected function fetchAll(): array
     {
+    	$this->didFetchAll = true;
+
     	return $this->data;
     }
 
@@ -42,6 +48,14 @@ class FruitRoster extends BaseRoster
      */
     protected function fetch($id): ?string
     {
+    	$this->didFetch = true;
+
+    	// Special case for fallback testing
+    	if ($id === 42)
+    	{
+    		return 'kumquat';
+    	}
+
     	return $this->data[$id] ?? null;
     }
 }
