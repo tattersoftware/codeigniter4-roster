@@ -21,7 +21,7 @@ final class ModelRosterTest extends RosterTestCase
 	{
 		parent::setUp();
 
-		$this->roster         = new class() extends ModelRoster {
+		$this->roster         = new class () extends ModelRoster {
 			protected $modelName = ColorModel::class;
 
 			protected $field = 'name';
@@ -33,7 +33,7 @@ final class ModelRosterTest extends RosterTestCase
 		$this->expectException('UnexpectedValueException');
 		$this->expectExceptionMessage('You must set the model name.');
 
-		new class() extends ModelRoster {};
+		new class () extends ModelRoster {};
 	}
 
 	public function testInvalidModel()
@@ -41,7 +41,7 @@ final class ModelRosterTest extends RosterTestCase
 		$this->expectException('UnexpectedValueException');
 		$this->expectExceptionMessage('Not a known model: Foo');
 
-		new class() extends ModelRoster {
+		new class () extends ModelRoster {
 			protected $modelName = 'Foo';
 		};
 	}
@@ -50,7 +50,7 @@ final class ModelRosterTest extends RosterTestCase
 	{
 		/** @var stdClass $color */
 		$color                = fake(ColorModel::class);
-		$roster               = new class() extends ModelRoster {
+		$roster               = new class () extends ModelRoster {
 			protected $modelName = ColorModel::class;
 		};
 
