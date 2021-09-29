@@ -62,7 +62,9 @@ class, `ModelRoster`. If your Roster aligns with an existing Model then simply e
 Once your Rosters are configured, use the service with the Roster name as the method and the
 ID of the item as the sole parameter:
 
-	$userName = service('roster')->user($userId);
+```php
+$userName = service('roster')->user($userId);
+```
 
 ## Example
 
@@ -72,7 +74,7 @@ to handle the display and save on expensive database joins for every page.
 
 First let's handle displaying the username next to each commet. You already have `UserModel`
 so we can use the `ModelRoster` to make it easier. Create **app/Rosters/UserRoster.php**:
-```
+```php
 namespace App\Rosters;
 
 use App\Models\UserModel;
@@ -87,7 +89,7 @@ class UserRoster extends ModelRoster
 
 That's it! `ModelRoster` handles retrieving the values based those properties. Now in our
 comment HTML block we can use the Roster service to display each username:
-```
+```php
 <?php foreach ($comments as $comment): ?>
 <div class="comment">
     <blockquote><?= $comment->content ?></blockquote>
@@ -102,7 +104,7 @@ Let's do our blog tags next: under the post title we want to display each tag fo
 Unfortunately tags are in the format "[General] Specific" so no single field will work for
 the display. We can still use the `ModelRoster` but instead specifying the field we will
 provide our own determining method. Create **app/Rosters/TagRoster.php**:
-```
+```php
 namespace App\Rosters;
 
 use App\Models\TagModel;
@@ -123,7 +125,7 @@ class TagRoster extends ModelRoster
 }
 ```
 Now our blog post header looks much cleaner:
-```
+```php
 <h1><?= $post->title ?></h1>
 <div class="tags">
     <?php foreach ($post->tags as $tagId): ?>
@@ -136,7 +138,7 @@ Finally, our blog is going to display a sidebar menu with post-relevant links to
 This data will come from a third-party API, which would be an expensive call to make on every
 page load so we create a Roster for it. Because the data source is not a Model we need to make
 our own extension of the Base Roster. Create **app/Rosters/LinkRoster.php**:
-```
+```php
 namespace App\Rosters;
 
 use App\Libraries\LinkApi;
@@ -185,7 +187,7 @@ class LinkRoster extends BaseRoster
 A little bit more code, but using `BaseRoster` gives a lot more control about where the data
 comes from and how it is formatted. You've probably already figure this part out, but let's
 finish off our links with their HTML menu:
-```
+```php
 <nav class="links-menu">
     <h3>Visit our partner blogs!</h3>
     <ul>
