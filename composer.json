@@ -25,7 +25,7 @@
     },
     "require-dev": {
         "codeigniter4/codeigniter4": "dev-develop",
-        "tatter/tools": "^1.12"
+        "tatter/tools": "^1.13"
     },
     "autoload": {
         "psr-4": {
