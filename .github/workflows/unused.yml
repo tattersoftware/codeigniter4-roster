@@ -36,4 +36,4 @@ jobs:
       - name: Detect unused packages
         run: |
             sudo phive --no-progress install --global --trust-gpg-keys F4D32E2C9343B2AE composer-unused 
-            composer-unused
+            composer-unused -vvv --profile --ansi --no-interaction --no-progress
