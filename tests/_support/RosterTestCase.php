@@ -29,19 +29,19 @@ abstract class RosterTestCase extends CIUnitTestCase
      */
     protected function getBaseRosterProperty(BaseRoster $roster, string $name)
     {
-		$class = new ReflectionObject($roster);
+        $class = new ReflectionObject($roster);
 
-		while ($class && $class->getName() !== BaseRoster::class) {
-			$class = $class->getParentClass();
-		}
+        while ($class && $class->getName() !== BaseRoster::class) {
+            $class = $class->getParentClass();
+        }
 
-		if ($class === false) {
-			throw new RuntimeException('Unable to locate BaseRoster.');
-		}
+        if ($class === false) {
+            throw new RuntimeException('Unable to locate BaseRoster.');
+        }
 
-		if (! $class->hasProperty($name)) {
-			throw new RuntimeException('Unable to locate ' . $name . '.');
-		}
+        if (! $class->hasProperty($name)) {
+            throw new RuntimeException('Unable to locate ' . $name . '.');
+        }
 
         $property = $class->getProperty($name);
         $property->setAccessible(true);

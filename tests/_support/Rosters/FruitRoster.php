@@ -6,24 +6,22 @@ use Tatter\Roster\BaseRoster;
 
 class FruitRoster extends BaseRoster
 {
-	public bool $didFetch = false;
+    public bool $didFetch    = false;
+    public bool $didFetchAll = false;
+    public array $data       = [
+        1 => 'banana',
+        2 => 'mango',
+        9 => 'apple',
+    ];
 
-	public bool $didFetchAll = false;
-
-	public array $data = [
-		1 => 'banana',
-		2 => 'mango',
-		9 => 'apple',
-	];
-
-	/**
-	 * Returns the handler-specific identifier used for caching
-	 * E.g. "roster-users"
-	 */
-	protected function key(): string
-	{
-		return 'roster-fruits';
-	}
+    /**
+     * Returns the handler-specific identifier used for caching
+     * E.g. "roster-users"
+     */
+    protected function key(): string
+    {
+        return 'roster-fruits';
+    }
 
     /**
      * Loads all IDs and their names from the data source.
@@ -32,9 +30,9 @@ class FruitRoster extends BaseRoster
      */
     protected function fetchAll(): array
     {
-    	$this->didFetchAll = true;
+        $this->didFetchAll = true;
 
-    	return $this->data;
+        return $this->data;
     }
 
     /**
@@ -48,14 +46,13 @@ class FruitRoster extends BaseRoster
      */
     protected function fetch($id): ?string
     {
-    	$this->didFetch = true;
+        $this->didFetch = true;
 
-    	// Special case for fallback testing
-    	if ($id === 42)
-    	{
-    		return 'kumquat';
-    	}
+        // Special case for fallback testing
+        if ($id === 42) {
+            return 'kumquat';
+        }
 
-    	return $this->data[$id] ?? null;
+        return $this->data[$id] ?? null;
     }
 }

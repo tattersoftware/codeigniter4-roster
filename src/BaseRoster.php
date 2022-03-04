@@ -11,24 +11,24 @@ use InvalidArgumentException;
  */
 abstract class BaseRoster
 {
-	/**
-	 * How long to cache this handler's store.
-	 *
-	 * @var int
-	 */
-	protected $ttl = DAY;
+    /**
+     * How long to cache this handler's store.
+     *
+     * @var int
+     */
+    protected $ttl = DAY;
 
-	/**
-	 * Stored hash of IDs and their name.
-	 *
-	 * @var array<int|string, string>|null
-	 */
-	private ?array $store = null;
+    /**
+     * Stored hash of IDs and their name.
+     *
+     * @var array<int|string, string>|null
+     */
+    private ?array $store = null;
 
-	/**
-	 * Whether the store has been updated since its last cache.
-	 */
-	private bool $updated = false;
+    /**
+     * Whether the store has been updated since its last cache.
+     */
+    private bool $updated = false;
 
     /**
      * Returns the display name for the given ID.
@@ -37,29 +37,27 @@ abstract class BaseRoster
      */
     final public function get($id): string
     {
-		if (! (is_int($id) || is_string($id)) || $id === '') // @phpstan-ignore-line
-		{
-			throw new InvalidArgumentException('ID must be an integer or non-empty string.');
-		}
+        if (! (is_int($id) || is_string($id)) || $id === '') { // @phpstan-ignore-line
+            throw new InvalidArgumentException('ID must be an integer or non-empty string.');
+        }
 
-    	if ($this->store === null) {
-    		$this->build();
-    	}
+        if ($this->store === null) {
+            $this->build();
+        }
 
-		if (! isset($this->store[$id])) {
-			// Not found! Fall back to the data source
-			if (null === $name = $this->fetch($id))
-			{
-				log_message('warning', 'Roster request for missing ID: ' . $id);
+        if (! isset($this->store[$id])) {
+            // Not found! Fall back to the data source
+            if (null === $name = $this->fetch($id)) {
+                log_message('warning', 'Roster request for missing ID: ' . $id);
 
-				return '';
-			}
+                return '';
+            }
 
-			$this->store[$id]    = $name;
-   	  	 	$this->updated = true;
-		}
+            $this->store[$id] = $name;
+            $this->updated    = true;
+        }
 
-		return $this->store[$id];
+        return $this->store[$id];
     }
 
     /**
@@ -68,11 +66,11 @@ abstract class BaseRoster
      */
     final public function cache(): void
     {
-    	if (! $this->updated) {
-    		return;
-    	}
+        if (! $this->updated) {
+            return;
+        }
 
-		cache()->save($this->key(), $this->store, $this->ttl);
+        cache()->save($this->key(), $this->store, $this->ttl);
     }
 
     /**
@@ -80,21 +78,20 @@ abstract class BaseRoster
      */
     private function build(): void
     {
-    	// Check the Cache first
-		if (null !== $this->store = cache($this->key()))
-		{
-			return;
-		}
+        // Check the Cache first
+        if (null !== $this->store = cache($this->key())) {
+            return;
+        }
 
-   	   	$this->store   = $this->fetchAll();
-   	   	$this->updated = true;
+        $this->store   = $this->fetchAll();
+        $this->updated = true;
     }
 
-	/**
-	 * Returns the handler-specific identifier used for caching
-	 * E.g. "roster-users"
-	 */
-	abstract protected function key(): string;
+    /**
+     * Returns the handler-specific identifier used for caching
+     * E.g. "roster-users"
+     */
+    abstract protected function key(): string;
 
     /**
      * Loads all IDs and their names from the data source.

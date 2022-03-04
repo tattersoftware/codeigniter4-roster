@@ -12,23 +12,23 @@ use UnexpectedValueException;
  */
 abstract class ModelRoster extends BaseRoster
 {
-	/**
-	 * Name of the Model to use.
-	 * Can be anything that `model()` accepts.
-	 *
-	 * @var string
-	 */
-	protected $modelName;
+    /**
+     * Name of the Model to use.
+     * Can be anything that `model()` accepts.
+     *
+     * @var string
+     */
+    protected $modelName;
 
-	/**
-	 * Which field contains the target display name.
-	 * Alternatively override getFieldValue();
-	 *
-	 * @var string|null
-	 */
-	protected $field;
+    /**
+     * Which field contains the target display name.
+     * Alternatively override getFieldValue();
+     *
+     * @var string|null
+     */
+    protected $field;
 
-	private ?Model $model = null;
+    private ?Model $model = null;
 
     /**
      * Validates the Model.
@@ -37,15 +37,14 @@ abstract class ModelRoster extends BaseRoster
      */
     public function __construct()
     {
-    	if (! is_string($this->modelName) || $this->modelName === '')
-    	{
-    		throw new UnexpectedValueException('You must set the model name.');
-    	}
+        if (! is_string($this->modelName) || $this->modelName === '') {
+            throw new UnexpectedValueException('You must set the model name.');
+        }
 
         // @phpstan-ignore-next-line
-		if (! $this->model = model($this->modelName)) {
-    		throw new UnexpectedValueException('Not a known model: ' . $this->modelName);
-		}
+        if (! $this->model = model($this->modelName)) {
+            throw new UnexpectedValueException('Not a known model: ' . $this->modelName);
+        }
     }
 
     /**
@@ -53,22 +52,21 @@ abstract class ModelRoster extends BaseRoster
      */
     protected function getFieldValue(array $row): string
     {
-    	if (! is_string($this->field) || $this->field === '')
-    	{
-    		throw new UnexpectedValueException('You must set the target field, or override the "fetch" methods.');
-		}
+        if (! is_string($this->field) || $this->field === '') {
+            throw new UnexpectedValueException('You must set the target field, or override the "fetch" methods.');
+        }
 
-		return $row[$this->field];
+        return $row[$this->field];
     }
 
-	/**
-	 * Returns the handler-specific identifier used for caching
-	 * E.g. "roster-users"
-	 */
-	protected function key(): string
-	{
-		return 'roster-' . $this->model->table; // @phpstan-ignore-line
-	}
+    /**
+     * Returns the handler-specific identifier used for caching
+     * E.g. "roster-users"
+     */
+    protected function key(): string
+    {
+        return 'roster-' . $this->model->table; // @phpstan-ignore-line
+    }
 
     /**
      * Loads all IDs and their names from the data source.
@@ -77,21 +75,20 @@ abstract class ModelRoster extends BaseRoster
      */
     protected function fetchAll(): array
     {
-    	$results = [];
+        $results = [];
 
-		foreach ($this->model->findAll() as $row)
-		{
-			if (! is_array($row)) {
-				$row = (array) $row;
-			}
+        foreach ($this->model->findAll() as $row) {
+            if (! is_array($row)) {
+                $row = (array) $row;
+            }
 
-			$id   = $row[$this->model->primaryKey]; // @phpstan-ignore-line
-			$name = $this->getFieldValue($row);
+            $id   = $row[$this->model->primaryKey]; // @phpstan-ignore-line
+            $name = $this->getFieldValue($row);
 
-			$results[$id] = $name;
-		}
+            $results[$id] = $name;
+        }
 
-		return $results;
+        return $results;
     }
 
     /**
@@ -105,15 +102,14 @@ abstract class ModelRoster extends BaseRoster
      */
     protected function fetch($id): ?string
     {
-    	if (! $row = $this->model->withDeleted()->find($id))
-    	{
-    		return null;
-    	}
+        if (! $row = $this->model->withDeleted()->find($id)) {
+            return null;
+        }
 
-		if (! is_array($row)) {
-			$row = (array) $row;
-		}
+        if (! is_array($row)) {
+            $row = (array) $row;
+        }
 
-		return $this->getFieldValue($row);
+        return $this->getFieldValue($row);
     }
 }
