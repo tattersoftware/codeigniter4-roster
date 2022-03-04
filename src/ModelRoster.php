@@ -45,6 +45,7 @@ abstract class ModelRoster extends BaseRoster
     		throw new UnexpectedValueException('You must set the model name.');
     	}
 
+        // @phpstan-ignore-next-line
 		if (! $this->model = model($this->modelName)) {
     		throw new UnexpectedValueException('Not a known model: ' . $this->modelName);
 		}
