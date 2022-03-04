@@ -28,10 +28,7 @@ abstract class ModelRoster extends BaseRoster
 	 */
 	protected $field;
 
-	/**
-	 * @var Model
-	 */
-	private $model;
+	private ?Model $model = null;
 
     /**
      * Validates the Model.

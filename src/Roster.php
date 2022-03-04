@@ -19,7 +19,7 @@ final class Roster
      *
      * @var array<string, BaseRoster>
      */
-    private $handlers = [];
+    private array $handlers = [];
 
     /**
      * Registers the post-system Event to commit final

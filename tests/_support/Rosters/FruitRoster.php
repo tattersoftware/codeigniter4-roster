@@ -6,11 +6,11 @@ use Tatter\Roster\BaseRoster;
 
 class FruitRoster extends BaseRoster
 {
-	public $didFetch = false;
+	public bool $didFetch = false;
 
-	public $didFetchAll = false;
+	public bool $didFetchAll = false;
 
-	public $data = [
+	public array $data = [
 		1 => 'banana',
 		2 => 'mango',
 		9 => 'apple',

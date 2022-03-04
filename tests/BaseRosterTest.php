@@ -8,10 +8,7 @@ use Tests\Support\RosterTestCase;
  */
 final class BaseRosterTest extends RosterTestCase
 {
-	/**
-	 * @var FruitRoster
-	 */
-	private $roster;
+	private FruitRoster $roster;
 
 	protected function setUp(): void
 	{

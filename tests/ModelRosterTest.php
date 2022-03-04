@@ -12,10 +12,7 @@ final class ModelRosterTest extends RosterTestCase
 {
 	use DatabaseTestTrait;
 
-	/**
-	 * @var ModelRoster
-	 */
-	private $roster;
+	private ModelRoster $roster;
 
 	protected function setUp(): void
 	{

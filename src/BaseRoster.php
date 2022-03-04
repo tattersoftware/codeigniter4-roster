@@ -23,14 +23,12 @@ abstract class BaseRoster
 	 *
 	 * @var array<int|string, string>|null
 	 */
-	private $store;
+	private ?array $store = null;
 
 	/**
 	 * Whether the store has been updated since its last cache.
-	 *
-	 * @var bool
 	 */
-	private $updated = false;
+	private bool $updated = false;
 
     /**
      * Returns the display name for the given ID.
