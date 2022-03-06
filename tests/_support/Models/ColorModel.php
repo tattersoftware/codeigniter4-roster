@@ -10,12 +10,10 @@ class ColorModel extends Model
     protected $table         = 'colors';
     protected $returnType    = 'object';
     protected $useTimestamps = true;
-
     protected $allowedFields = [
-    	'name',
-    	'hex',
+        'name',
+        'hex',
     ];
-
     protected $validationRules = [
         'name' => 'required|max_length[255]',
         'hex'  => 'permit_empty|max_length[7]',

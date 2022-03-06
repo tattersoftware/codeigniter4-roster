@@ -19,7 +19,7 @@ final class Roster
      *
      * @var array<string, BaseRoster>
      */
-    private $handlers = [];
+    private array $handlers = [];
 
     /**
      * Registers the post-system Event to commit final
@@ -27,7 +27,7 @@ final class Roster
      */
     public function __construct()
     {
-    	Events::on('post_system', [$this, 'commit']);
+        Events::on('post_system', [$this, 'commit']);
     }
 
     /**
@@ -41,20 +41,18 @@ final class Roster
      */
     public function __call(string $shortname, array $params): string
     {
-    	if (count($params) !== 1)
-    	{
-    		throw new BadMethodCallException('Roster::' . $shortname . '() expects a single parameter.');
-    	}
+        if (count($params) !== 1) {
+            throw new BadMethodCallException('Roster::' . $shortname . '() expects a single parameter.');
+        }
 
-    	$id = reset($params);
-    	unset($params);
+        $id = reset($params);
+        unset($params);
 
-		if (null === $handler = $this->getHandler($shortname))
-		{
-			throw new BadFunctionCallException('Unknown Roster handler "' . $shortname . '".');
-		}
+        if (null === $handler = $this->getHandler($shortname)) {
+            throw new BadFunctionCallException('Unknown Roster handler "' . $shortname . '".');
+        }
 
-		return $handler->get($id);
+        return $handler->get($id);
     }
 
     /**
@@ -62,14 +60,13 @@ final class Roster
      */
     public function getHandler(string $shortname): ?BaseRoster
     {
-        if (! array_key_exists($shortname, $this->handlers))
-        {
-        	$class = ucfirst($shortname) . 'Roster';
+        if (! array_key_exists($shortname, $this->handlers)) {
+            $class = ucfirst($shortname) . 'Roster';
 
-        	$this->handlers[$shortname] = Factories::rosters($class);
+            $this->handlers[$shortname] = Factories::rosters($class);
         }
 
-       	return $this->handlers[$shortname];
+        return $this->handlers[$shortname];
     }
 
     /**
@@ -77,9 +74,9 @@ final class Roster
      */
     public function setHandler(string $shortname, ?BaseRoster $handler): self
     {
-       	$this->handlers[$shortname] = $handler;
+        $this->handlers[$shortname] = $handler;
 
-       	return $this;
+        return $this;
     }
 
     /**
@@ -87,9 +84,8 @@ final class Roster
      */
     public function commit(): void
     {
-    	foreach ($this->handlers as $handler)
-    	{
-    		$handler->cache();
-    	}
+        foreach ($this->handlers as $handler) {
+            $handler->cache();
+        }
     }
 }
